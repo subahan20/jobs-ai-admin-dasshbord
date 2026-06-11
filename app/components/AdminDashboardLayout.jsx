@@ -3,6 +3,7 @@
 import React from 'react';
 import AdminSidebar from './AdminSidebar';
 
+
 const getUserDisplay = (user) => {
   const meta = user?.user_metadata || {};
   const fullName = meta.full_name || meta.name || '';
