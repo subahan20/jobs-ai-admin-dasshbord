@@ -105,8 +105,22 @@ export default function AdminJobsTable({ jobs = [], currentPage, totalJobs, jobs
               </tr>
             ) : (
               paginatedJobs.map((job) => {
+                const formatText = (text) => {
+                  if (!text) return '';
+                  return text
+                    .replace(/[-_]/g, ' ')
+                    .replace(/[^\w\s]/gi, '')
+                    .split(/\s+/)
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join(' ')
+                    .trim();
+                };
+
+                const formattedTitle = formatText(job.title);
+                const formattedCompany = formatText(job.company);
+
                 const isTech = (job.title || '').toLowerCase().match(/engineer|developer|data|tech|scientist|ml|mobile|cloud|frontend|backend/);
-                const { bg, fg, letter } = getAvatarColors(job.company);
+                const { bg, fg, letter } = getAvatarColors(formattedCompany || job.company);
                 const postedDate = new Date(job.created_at || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 const websiteUrl = job.url ? new URL(job.url).hostname : `${(job.company || 'company').toLowerCase().replace(/\s+/g, '')}.com`;
 
@@ -117,7 +131,7 @@ export default function AdminJobsTable({ jobs = [], currentPage, totalJobs, jobs
                       <div className="flex items-center gap-3">
                         {job.logo_url ? (
                           <div className="w-10 h-10 rounded-lg border border-zinc-200 overflow-hidden shrink-0 bg-white p-1">
-                            <img src={job.logo_url} alt={job.company} className="w-full h-full object-contain" />
+                            <img src={job.logo_url} alt={formattedCompany} className="w-full h-full object-contain" />
                           </div>
                         ) : (
                           <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 text-[13px] font-black shadow-sm" style={{ backgroundColor: bg, color: fg }}>
@@ -125,7 +139,7 @@ export default function AdminJobsTable({ jobs = [], currentPage, totalJobs, jobs
                           </div>
                         )}
                         <div className="flex flex-col">
-                          <span className="text-[13px] font-black text-zinc-900">{job.company}</span>
+                          <span className="text-[13px] font-black text-zinc-900">{formattedCompany}</span>
                           <span className="text-[11px] text-zinc-500 font-medium">{websiteUrl}</span>
                         </div>
                       </div>
@@ -134,7 +148,7 @@ export default function AdminJobsTable({ jobs = [], currentPage, totalJobs, jobs
                     {/* Role Column */}
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
-                        <span className="text-[13px] font-black text-zinc-900 truncate max-w-[200px]">{job.title}</span>
+                        <span className="text-[13px] font-black text-zinc-900 truncate max-w-[200px]">{formattedTitle}</span>
                         <span className="text-[11px] text-zinc-500 font-medium truncate max-w-[200px]">{job.category || job.experience_level}</span>
                       </div>
                     </td>
