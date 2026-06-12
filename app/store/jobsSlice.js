@@ -22,7 +22,7 @@ export const fetchJobs = createAsyncThunk(
   'jobs/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/jobs?source=Admin+Portal&limit=100`);
+      const res = await fetch(`${API_BASE_URL}/jobs?limit=200&source=Admin`);
       if (!res.ok) throw new Error(`Server returned status: ${res.status}`);
       const data = await res.json();
       return data?.jobs || [];

@@ -8,6 +8,7 @@ import JobForm from './components/JobForm';
 import AdminDashboardLayout from './components/AdminDashboardLayout';
 import AdminStatCards from './components/AdminStatCards';
 import AdminJobsTable from './components/AdminJobsTable';
+import AdminAiSyncedJobs from './components/AdminAiSyncedJobs';
 import { loadSession, logout } from './store/authSlice';
 import { fetchJobs, publishJob, updateJob, deleteJob } from './store/jobsSlice';
 import { setModalOpen, triggerNotification, setEditingJob } from './store/uiSlice';
@@ -100,11 +101,19 @@ export default function AdminDashboard() {
       <div className="w-full relative">
         <Notification notification={notification} />
 
-        {activeTab === 'Upload Job' ? (
+        {activeTab === 'Upload Job' && (
           <div className="flex items-start justify-center px-6 py-10 min-h-[calc(100vh-72px-3rem)]">
             <JobForm onSubmit={handlePublishJob} submitting={submitting} />
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'AI Bulk Sync' && (
+          <div className="px-6 min-h-[calc(100vh-72px-3rem)]">
+            <AdminAiSyncedJobs />
+          </div>
+        )}
+
+        {activeTab === 'All Posted Jobs' && (
           <div className="max-w-6xl mx-auto px-8 py-8 flex flex-col gap-6 w-full">
             <div>
               <h2 className="text-2xl font-extrabold text-[#1a1c2e] tracking-tight">All Posted Jobs</h2>
